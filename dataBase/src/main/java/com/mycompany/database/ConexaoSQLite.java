@@ -29,4 +29,16 @@ public class ConexaoSQLite {
         
         return conexao;
     }
+    
+    public void Desconectar(Connection conexao) {
+        try {
+            if(conexao != null) {
+                conexao.close();
+                System.out.println("Conexão fechada");
+            }
+        }
+        catch(SQLException e) {
+            System.out.println("Erro ao fechar a conexão  " + e.getMessage());
+        }
+    }
 }

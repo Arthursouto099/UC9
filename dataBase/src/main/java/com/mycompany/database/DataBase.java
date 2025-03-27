@@ -11,6 +11,7 @@ package com.mycompany.database;
 public class DataBase {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+       ConexaoSQLite myConnection = new ConexaoSQLite();
+       myConnection.conectar();
     }
 }
