@@ -15,7 +15,7 @@ import  java.sql.ResultSet;
  */
 public class ListUsers {
      
-    public static void listUsers(Connection connection) {
+    public static String listUsers(Connection connection) {
         
         String sql = "Select * from users";
         String userTable = "";
@@ -35,10 +35,13 @@ public class ListUsers {
                userTable += "ID " + id +  " NAME: " + name + " EMAIL: " + email + "\n";
            }
            
-            System.out.println(userTable);
+            return userTable;
            
         } catch (Exception e) {
             System.out.println("Erro ao buscar os usuarios, " + e.getMessage());
+            userTable += e.getMessage();
+            return userTable;
+            
         }
     }
     

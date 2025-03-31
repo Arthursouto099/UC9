@@ -20,7 +20,8 @@ public class DataBase {
 
         InsertUser.insert(connection, "Arthur Tavares", "arthur@gmail.com");
        
-       ListUsers.listUsers(connection);
+        System.out.println(ListUsers.listUsers(connection));
+        
        
     }
 }
