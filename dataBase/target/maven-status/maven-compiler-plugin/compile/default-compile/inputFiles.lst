@@ -1,2 +1,7 @@
-C:\UC9\dataBase\src\main\java\com\mycompany\database\DataBase.java
-C:\UC9\dataBase\src\main\java\com\mycompany\database\ConexaoSQLite.java
+C:\uc9\UC9\dataBase\src\main\java\com\mycompany\database\DeleteUser.java
+C:\uc9\UC9\dataBase\src\main\java\com\mycompany\database\InsertUser.java
+C:\uc9\UC9\dataBase\src\main\java\com\mycompany\database\CreateTable.java
+C:\uc9\UC9\dataBase\src\main\java\com\mycompany\database\ListUsers.java
+C:\uc9\UC9\dataBase\src\main\java\com\mycompany\database\DataBase.java
+C:\uc9\UC9\dataBase\src\main\java\com\mycompany\database\ConexaoSQLite.java
+C:\uc9\UC9\dataBase\src\main\java\com\mycompany\database\UpdateUser.java
