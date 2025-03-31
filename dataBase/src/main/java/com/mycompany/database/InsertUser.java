@@ -6,6 +6,7 @@ package com.mycompany.database;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Connection;
+import javax.swing.JOptionPane;
 
 
 
@@ -17,7 +18,7 @@ import java.sql.Connection;
 public class InsertUser {
     
     
-    public static void insert(Connection connection, String name, String email) {
+    public static void insert(Connection connection, String name, String email ) {
         
         String insert = "Insert into users(name, email) values(?,?)";
         
@@ -28,10 +29,12 @@ public class InsertUser {
         pstm.executeUpdate();
         
         System.out.println("Usuario inserido com sucesso");
+        JOptionPane.showMessageDialog(null, "Usuario inserido com sucesso");
             
             
         }catch(SQLException e) {
             System.err.println("Erro ao criar Usuario, " + e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
         
     }
