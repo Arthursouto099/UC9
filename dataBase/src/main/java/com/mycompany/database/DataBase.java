@@ -18,9 +18,7 @@ public class DataBase {
 //       UpdateUser.updateUser(connection, 2, "Rafael", "rafaeltavaressouto");;
 //       DeleteUser.deleteUSer(connection, 2);
 
-        InsertUser.insert(connection, "Arthur Tavares", "arthur@gmail.com");
-       
-        System.out.println(ListUsers.listUsers(connection));
+        
         
        
     }

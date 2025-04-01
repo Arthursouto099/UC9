@@ -5,8 +5,9 @@
 package com.mycompany.database;
 
 import java.sql.Connection;
-
-
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import java.sql.SQLException;
 
 /**
  *
@@ -17,12 +18,13 @@ public class DisplayLogin extends javax.swing.JFrame {
     /**
      * Creates new form DisplayLogin
      */
-    
     ConexaoSQLite myConnection = new ConexaoSQLite();
-    Connection connection =  myConnection.conectar();
-    
+    Connection connection = myConnection.conectar();
+   
+
     public DisplayLogin() {
         initComponents();
+
     }
 
     /**
@@ -47,6 +49,11 @@ public class DisplayLogin extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         buttonLogin.setText("Login");
+        buttonLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLoginActionPerformed(evt);
+            }
+        });
 
         buttonRegister.setText("Register");
         buttonRegister.addActionListener(new java.awt.event.ActionListener() {
@@ -118,15 +125,66 @@ public class DisplayLogin extends javax.swing.JFrame {
     private void buttonRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRegisterActionPerformed
         String name = inputName.getText();
         String email = inputEmail.getText();
-        
+        char[] passwordArray = inputPassword.getPassword();
+        String password = new String(passwordArray);
+
         try {
-           InsertUser.insert(this.connection, name, email); 
+
+            if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+                InsertUser.insert(this.connection, name, email, password);
+                inputName.setText("");
+                inputEmail.setText("");
+                inputPassword.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this, "Campos vazios");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        catch(Exception e) {
-            
-        }
-        
+
     }//GEN-LAST:event_buttonRegisterActionPerformed
+
+    private void buttonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoginActionPerformed
+        
+        String nameInput = inputName.getText();
+        String emailInput = inputEmail.getText();
+        char[] passwordArray = inputPassword.getPassword();
+        String password = new String(passwordArray);
+//            ArrayList<String> emailsAsString = ListUsers.getEmailsAndPasswords(this.connection);
+//
+//            boolean verify = false;
+//
+//            for (String emailAndPassword : emailsAsString) {
+//                String[] splited = emailAndPassword.split(":");
+//                String email = splited[0];
+//                String password = splited[1];
+//
+//                if (email.equals(emailInput)) {
+//                    if (password.equals(password)) {
+//                        verify = true;
+//                    }
+//                }
+//            }
+//
+//            if (verify) {
+//                JOptionPane.showMessageDialog(this, "Usuario logado com sucesso");
+//            } else if (emailInput.isEmpty() || passwordInput.isEmpty()) {
+//
+//            } else {
+//
+//                JOptionPane.showMessageDialog(this, "Campos vazios");
+//            }
+        String user = ListUsers.getUSer(this.connection, emailInput, password);
+
+        if (user == null) {
+            JOptionPane.showMessageDialog(this, "Usuario ou senha incorretas");
+        } else {
+             TestFrame frame = new TestFrame(emailInput, nameInput);
+            JOptionPane.showMessageDialog(this, "Logado com sucesso");
+            this.dispose();
+            frame.setVisible(true);
+        }
+    }//GEN-LAST:event_buttonLoginActionPerformed
 
     /**
      * @param args the command line arguments

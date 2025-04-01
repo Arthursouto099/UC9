@@ -18,13 +18,14 @@ import javax.swing.JOptionPane;
 public class InsertUser {
     
     
-    public static void insert(Connection connection, String name, String email ) {
+    public static void insert(Connection connection, String name, String email, String password ) {
         
-        String insert = "Insert into users(name, email) values(?,?)";
+        String insert = "Insert into users(name, email, password) values(?,?,?)";
         
         try(PreparedStatement pstm = connection.prepareStatement(insert)) {
         pstm.setString(1, name);
         pstm.setString(2, email);
+        pstm.setString(3, password);
         
         pstm.executeUpdate();
         

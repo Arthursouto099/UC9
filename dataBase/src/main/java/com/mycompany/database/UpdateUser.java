@@ -13,15 +13,16 @@ import java.sql.SQLException;
  * @author ARTHURSANTOSTAVARESS
  */
 public class UpdateUser {
-    public static void updateUser(Connection connection, int id, String name, String email) {
+    public static void updateUser(Connection connection, int id, String name, String email, String password) {
         
         try{
-            String update = "Update users set name = ?, email = ? where id = ?";
+            String update = "Update users set name = ?, email = ?, password = ?, where id = ?";
             
             try (PreparedStatement pstmt = connection.prepareStatement(update)) {
                 pstmt.setString(1, name);
                 pstmt.setString(2, email);
-                pstmt.setInt(3, id);
+                pstmt.setString(3, password);
+                pstmt.setInt(4, id);
                 
                 int rowsUpdated = pstmt.executeUpdate();
                 

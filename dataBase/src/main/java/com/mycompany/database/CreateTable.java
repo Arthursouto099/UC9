@@ -21,8 +21,11 @@ public class CreateTable {
         String createTable = "Create table IF NOT EXISTS users  ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "name VARCHAR(40) NOT NULL,"
-                + "email VARCHAR(100) NOT NULL"
+                + "email VARCHAR(100) NOT NULL,"
+                + "password VARCHAR(20) NOT NULL"
                 + ")";
+
+//           String createTable = "drop table users";
 
         try (Statement smt = connection.createStatement()) {
             smt.execute(createTable);
