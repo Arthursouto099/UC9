@@ -4,23 +4,37 @@
  */
 package com.mycompany.database;
 
+import java.sql.Connection;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ARTHURSANTOSTAVARESS
  */
 public class TestFrame extends javax.swing.JFrame {
+
+    String id;
     String name;
     String email;
+    Connection connectionDATABASE;
+    String password = null;
+
     /**
      * Creates new form TestFrame
      */
-    public TestFrame(String email, String name) {
+    public TestFrame(String id, String email, String name) {
         initComponents();
+        this.id = id;
         this.email = email;
         this.name = name;
-        
-
-        jLabel1.setText("Você está logado com email de: " + this.email + "\n" + "Seja bem vindo: " + this.name);
+        ConexaoSQLite connection = new ConexaoSQLite();
+        connectionDATABASE = connection.conectar();
+        jLabel1.setText("Logado com o email: " + this.email);
+        this.name_field.setText(name);
+        this.email_field.setText(email);
+        this.password = ListUsers.getUSer(connectionDATABASE, email, password)[3];
+        if(password != null) this.password_field.setText(this.password);
+ 
     }
 
     /**
@@ -32,6 +46,7 @@ public class TestFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu1 = new javax.swing.JMenu();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         name_field = new javax.swing.JTextField();
@@ -39,12 +54,17 @@ public class TestFrame extends javax.swing.JFrame {
         password_field = new javax.swing.JPasswordField();
         updateButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+
+        jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Seja bem vindo(a)");
 
@@ -60,51 +80,71 @@ public class TestFrame extends javax.swing.JFrame {
         password_field.setText("jPasswordField1");
 
         updateButton.setText("Update");
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateButtonActionPerformed(evt);
+            }
+        });
 
         deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(email_field, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-                    .addComponent(name_field)
-                    .addComponent(password_field)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(jLabel1)))
-                .addContainerGap(538, Short.MAX_VALUE))
+                .addGap(66, 66, 66)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(email_field, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(password_field, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(name_field, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(52, 52, 52)
+                .addGap(53, 53, 53)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addGap(31, 31, 31)
                 .addComponent(name_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(email_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(password_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateButton)
                     .addComponent(deleteButton))
-                .addContainerGap(223, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
+
+        jMenu2.setText("File");
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Edit");
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,6 +157,44 @@ public class TestFrame extends javax.swing.JFrame {
     private void email_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_email_fieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_email_fieldActionPerformed
+
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+        String nameInput = name_field.getText();
+        String emailInput = email_field.getText();
+        char[] passwordArray = password_field.getPassword();
+        String passwordInput = new String(passwordArray);
+        
+        Object[] options = {"SIM", "NÂO"};
+        
+        int responseByUser = JOptionPane.showOptionDialog(this, "Você tem certeza que deseja EDITAR esse usuario?", "CONFIRMAÇÂO", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, "SIM");
+        
+        if(responseByUser == JOptionPane.YES_OPTION) {
+            String message = UpdateUser.updateUserByEmail(this.connectionDATABASE, this.email, emailInput, passwordInput, nameInput); 
+            JOptionPane.showMessageDialog(this, message);
+            this.dispose();
+            new DisplayLogin().setVisible(true);
+        }
+        
+        else JOptionPane.showMessageDialog(this, "OPERAÇÂO CANCELADA");
+      
+
+
+    }//GEN-LAST:event_updateButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        Object[] options = {"SIM", "NÂO"};
+        
+        int responseByUser = JOptionPane.showOptionDialog(this, "você tem certeza que deseja DELETAR esse usuario?", "CONFIRMAÇÂO" , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options , "SIM");
+        
+        if(responseByUser == JOptionPane.YES_OPTION) {
+            String message = DeleteUser.deleteUSer(this.connectionDATABASE, Integer.parseInt(this.id));
+            JOptionPane.showMessageDialog(this, message);
+            this.dispose();
+            new DisplayLogin().setVisible(true);
+        }
+        
+        else JOptionPane.showMessageDialog(this, "OPERAÇÂO CANCELADA");
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -157,6 +235,10 @@ public class TestFrame extends javax.swing.JFrame {
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField email_field;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField name_field;
     private javax.swing.JPasswordField password_field;

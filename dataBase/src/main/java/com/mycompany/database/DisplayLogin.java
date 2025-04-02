@@ -45,6 +45,10 @@ public class DisplayLogin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        adm_option = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,24 +93,42 @@ public class DisplayLogin extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(51, 51, 51)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(inputName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addGap(1, 1, 1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(inputEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(inputPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(buttonLogin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonRegister)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
+
+        jMenu1.setText("ADM");
+
+        adm_option.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
+        adm_option.setText("Entrar");
+        adm_option.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adm_optionActionPerformed(evt);
+            }
+        });
+        jMenu1.add(adm_option);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,7 +153,17 @@ public class DisplayLogin extends javax.swing.JFrame {
         try {
 
             if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                InsertUser.insert(this.connection, name, email, password);
+                boolean check = ListUsers.checkExistUser(this.connection, email);
+                System.out.println(check);
+                if(check == true) {
+                    JOptionPane.showMessageDialog(this, "Já existe um usuario usando esse email");
+                }
+                
+                else {
+                    InsertUser.insert(this.connection, name, email, password); 
+                }
+                
+    
                 inputName.setText("");
                 inputEmail.setText("");
                 inputPassword.setText("");
@@ -150,6 +182,7 @@ public class DisplayLogin extends javax.swing.JFrame {
         String emailInput = inputEmail.getText();
         char[] passwordArray = inputPassword.getPassword();
         String password = new String(passwordArray);
+        
 //            ArrayList<String> emailsAsString = ListUsers.getEmailsAndPasswords(this.connection);
 //
 //            boolean verify = false;
@@ -174,17 +207,26 @@ public class DisplayLogin extends javax.swing.JFrame {
 //
 //                JOptionPane.showMessageDialog(this, "Campos vazios");
 //            }
-        String user = ListUsers.getUSer(this.connection, emailInput, password);
+        String[] user = ListUsers.getUSer(this.connection, emailInput, password);
 
-        if (user == null) {
+        if (user.length < 1) {
             JOptionPane.showMessageDialog(this, "Usuario ou senha incorretas");
         } else {
-             TestFrame frame = new TestFrame(emailInput, nameInput);
+            TestFrame frame = new TestFrame(user[0], user[2], user[1]);
             JOptionPane.showMessageDialog(this, "Logado com sucesso");
             this.dispose();
             frame.setVisible(true);
         }
     }//GEN-LAST:event_buttonLoginActionPerformed
+
+    private void adm_optionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adm_optionActionPerformed
+       String inputADM =  JOptionPane.showInputDialog(this, "DIGITE A SENHA DE ADMINISTRADOR");
+       
+       if(inputADM.equals("123")) {
+           this.dispose();
+           new FrameAdm().setVisible(true);
+       }
+    }//GEN-LAST:event_adm_optionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -222,6 +264,7 @@ public class DisplayLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem adm_option;
     private javax.swing.JButton buttonLogin;
     private javax.swing.JButton buttonRegister;
     private javax.swing.JTextField inputEmail;
@@ -230,6 +273,9 @@ public class DisplayLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

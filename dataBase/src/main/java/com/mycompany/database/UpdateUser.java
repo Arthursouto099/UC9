@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 
+
 /**
  *
  * @author ARTHURSANTOSTAVARESS
@@ -27,7 +28,7 @@ public class UpdateUser {
                 int rowsUpdated = pstmt.executeUpdate();
                 
                 if(rowsUpdated > 0 ) {
-                    System.err.println("Usuario editado com sucesso");
+                    System.out.println("Usuario editado com sucesso");
                 }
                 
                 else {
@@ -37,7 +38,7 @@ public class UpdateUser {
                 
                 
             }catch(SQLException e) {
-                 System.err.println(e.getMessage());
+                 System.out.println(e.getMessage());
             }
             
             
@@ -45,8 +46,29 @@ public class UpdateUser {
         }
         
         catch(Exception e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
         
+    }
+    
+    
+    
+    public static String updateUserByEmail(Connection connection, String oldEmail, String newEmail, String password, String name) {
+        String strSQL = "Update users set name = ?, email = ?, password = ? where email = ?";
+        
+        try(PreparedStatement pstmt = connection.prepareStatement(strSQL)) {
+            pstmt.setString(1, name);
+            pstmt.setString(2, newEmail);
+            pstmt.setString(3, password);
+            pstmt.setString(4, oldEmail); 
+            int rowUpdated = pstmt.executeUpdate();
+            
+            if(rowUpdated > 0) return "Usuario editado com sucesso";
+            else return "Nenhum Usuario com esse email encontrado" ;
+        }
+        
+        catch(SQLException e) {
+            return  e.getMessage();
+        }
     }
 }

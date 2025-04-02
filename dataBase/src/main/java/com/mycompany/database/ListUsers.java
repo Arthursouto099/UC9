@@ -48,9 +48,9 @@ public class ListUsers {
         }
     }
     
-      public static String getUSer(Connection connection,  String email, String password) {
+      public static String[] getUSer(Connection connection,  String email, String password) {
        
-        String user = "";
+        String[] user = new String[4];
         
         String sql = "Select * from users where email = ? and password = ?";
         
@@ -60,24 +60,22 @@ public class ListUsers {
             pstmt.executeQuery();
             
             ResultSet userByData = pstmt.executeQuery();
-            user += userByData.getString("name") + ":";
-            user += userByData.getString("email") + ":";
-            user += userByData.getString("password");
+            user[0] = userByData.getString("id");
+            user[1] = userByData.getString("name");
+            user[2] = userByData.getString("email");
+            user[3] = userByData.getString("password");
             
             if(userByData.next()) {
                 return user;
             }
             
-            return  null;
+            return  user;
             
            
-            
-            
-            
-            
+ 
             
         }catch(SQLException e) {
-            return null;
+            return user;
         }
         
         
@@ -88,13 +86,43 @@ public class ListUsers {
         
        
     }
+      
+      
+    public  static Boolean checkExistUser(Connection connection, String email) {
+        
+        String sqlStr = "Select * from users where email = ?";
+        
+        try(PreparedStatement pstmt = connection.prepareStatement(sqlStr)){
+            pstmt.setString(1, email);
+            ResultSet rs =  pstmt.executeQuery();
+            
+            if(rs.next()) {
+                System.out.println(rs.getString("email"));
+                return  true;
+            }
+            
+            else {
+                return false;
+            }
+            
+           
+        }
+        
+        catch(SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        
+        
+        
+    }
     
     
-    public static ArrayList<String> getEmailsAndPasswords(Connection connection) {
+    public static ArrayList<String> getInfoFromUsers(Connection connection) {
         
                 
         ArrayList<String> emailsAsString = new ArrayList<>();
-        String sqlStr = "Select email, password from users";
+        String sqlStr = "Select * from users";
         
         try(PreparedStatement pstmt = connection.prepareStatement(sqlStr)) {
     
@@ -102,14 +130,11 @@ public class ListUsers {
             ResultSet emailAndPasswordByDATA = pstmt.executeQuery();
             
             while(emailAndPasswordByDATA.next()) {
+                String id = emailAndPasswordByDATA.getString("id");
                 String email = emailAndPasswordByDATA.getString("email");
                 String password = emailAndPasswordByDATA.getString("password");
-                
-                String strFormated = "";
-                
-                strFormated += email;
-                strFormated += ":";
-                strFormated += password;
+                String name = emailAndPasswordByDATA.getString("name");
+                String  strFormated = id + ":" + name + ":" + email + ":" + password;
                 
                 emailsAsString.add(strFormated);
             }

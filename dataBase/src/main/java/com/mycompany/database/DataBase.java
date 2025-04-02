@@ -13,10 +13,7 @@ public class DataBase {
     public static void main(String[] args) {
        ConexaoSQLite myConnection = new ConexaoSQLite();
        Connection connection =  myConnection.conectar();
-       CreateTable.createTable(connection);
        
-//       UpdateUser.updateUser(connection, 2, "Rafael", "rafaeltavaressouto");;
-//       DeleteUser.deleteUSer(connection, 2);
 
         
         

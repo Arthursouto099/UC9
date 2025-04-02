@@ -15,7 +15,7 @@ public class DeleteUser {
    
     
     
-    public static void deleteUSer(Connection connection, int id) {
+    public static String deleteUSer(Connection connection, int id) {
         
         String deleteUser = "Delete from users where id = ?";
         
@@ -24,11 +24,11 @@ public class DeleteUser {
             int rowsDeleted =  psmt.executeUpdate();
             
             if(rowsDeleted > 0) {
-                System.out.println("Usuario deletado com sucesso");
+                return "Usuario deletado com sucesso";
             }
             
             else {
-                System.out.println("Nenhum usuario com esse id foi encontrado");
+                return "Nenhum usuario com esse id foi encontrado";
             }
             
             
@@ -36,9 +36,9 @@ public class DeleteUser {
         
         catch(SQLException e) {
             System.out.println("Erro ao deletar Usuario" + e.getMessage());
+            return e.getMessage();
         }
         
     }
-    
     
 }
