@@ -11,11 +11,15 @@ import javax.swing.JOptionPane;
 
 
 
+
+
 /**
  *
  * @author ARTHURSANTOSTAVARESS
  */
 public class InsertUser {
+    
+    
     
     
     public static void insert(Connection connection, String name, String email, String password ) {
@@ -26,6 +30,7 @@ public class InsertUser {
         pstm.setString(1, name);
         pstm.setString(2, email);
         pstm.setString(3, password);
+       
         
         pstm.executeUpdate();
         
