@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  *
  * @author ARTHURSANTOSTAVARESS
  */
-public class CreateTables {
+public class CreateTable {
     
     public static void createTables(Connection connection) {
         
