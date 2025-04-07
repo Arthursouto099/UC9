@@ -3,8 +3,9 @@
  */
 
 package com.mycompany.library;
-import com.mycompany.library.database.ConnectionSQLITE;
+import com.mycompany.library.database.*;
 import java.sql.Connection;
+
 
 /**
  *
@@ -15,5 +16,8 @@ public class Library {
     public static void main(String[] args) {
         ConnectionSQLITE myIstance = new ConnectionSQLITE();
         Connection con = myIstance.connectDATABASE();
+        
+        CreateTable.createTables(con);
+        
     }
 }

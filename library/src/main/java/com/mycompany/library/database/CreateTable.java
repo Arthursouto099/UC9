@@ -5,29 +5,30 @@
 package com.mycompany.library.database;
 import java.sql.Connection;
 import java.sql.Statement;
-import java
 
 /**
  *
  * @author ARTHURSANTOSTAVARESS
  */
+import java.sql.SQLException;
 public class CreateTable {
     
     public static void createTables(Connection connection) {
         
-        String sql = "CREATE TABLE book IF NOT EXISTS ("
-                + "id INT PRIMARY KEY AUTOINCREMENT NOT NULL, "
-                + "title VARCHAR(100) NOT NULL "
-                + "author VARCHAR(100) NOT NULL"
+        String sql = "CREATE TABLE IF NOT EXISTS book  ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                + "title VARCHAR(100) NOT NULL, "
+                + "author VARCHAR(100) NOT NULL,"
                 + "price REAL NOT NULL,"
                 + "year INT NOT NULL)";
         
-//        try(Statement stmt = connection.prepareStatement(sql)) {
-//            
-//        }
-//        catch() {
-//            
-//        }
+        try(Statement stmt = connection.createStatement()) {;;
+            stmt.execute(sql);
+            System.out.println("table created. succesful");
+        }
+        catch(SQLException e) {
+            System.out.println("error, " + e.getMessage());
+        }
         
         
     }
