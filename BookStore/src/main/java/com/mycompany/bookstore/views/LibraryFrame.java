@@ -1,30 +1,64 @@
 package com.mycompany.bookstore.views;
-import  javax.swing.JOptionPane;
+
+import javax.swing.JOptionPane;
 import com.mycompany.bookstore.controller.BookController;
 import com.mycompany.bookstore.dataBase.ConnectionSQL;
 import com.mycompany.bookstore.model.Book;
+import java.util.ArrayList;
 import java.sql.Connection;
+import java.util.Locale;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
-
 /**
  *
  * @author ARTHURSANTOSTAVARESS
  */
 public class LibraryFrame extends javax.swing.JFrame {
-    
-        ConnectionSQL connect = new ConnectionSQL();
-        Connection  connection = connect.connect();
-        
+
+    ConnectionSQL connect = new ConnectionSQL();
+    Connection connection = connect.connect();
+
+    DefaultTableModel model = new DefaultTableModel();
 
     /**
      * Creates new form LibaryFrame
      */
     public LibraryFrame() {
         initComponents();
+        model.addColumn("ID");
+        model.addColumn("TITLE");
+        model.addColumn("AUTHOR");
+        model.addColumn("PRICE");
+        model.addColumn("YEAR");
+        model.addColumn("RENTEND");
+
+        updateList();
+
+        book_list.setModel(model);
+    }
+
+    public void updateList() {
+        model.setRowCount(0);
+        ArrayList<Book> booksTable = BookController.findBooks();
+        for (Book b : booksTable) {
+            model.addRow(new Object[]{b.getId(), b.getTitle(), b.getAuthor(), b.getPrice(), b.getYear(), b.isIsRetend()});
+        }
+    }
+
+    public void clearSelecteds() {
+        isSelectId.setText("NENHUM ID SELECIONADO:");
+        isSelectLabel.setText("NENHUM LIVRO SELECIONADO:");
+        isSelectLAuthor.setText("NENHUM LIVRO SELECIONADO:");
+        isSelectPrice.setText("NENHUM LIVRO SELECIONADO:");
+        isSelectLYear.setText("NENHUM LIVRO SELECIONADO:");
+        titleField.setText("");
+        authorField.setText("");
+        priceField.setText("");
+        yearField.setText("");
     }
 
     /**
@@ -40,15 +74,24 @@ public class LibraryFrame extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        titleField = new javax.swing.JTextField();
         authorField = new javax.swing.JTextField();
-        yearField = new javax.swing.JTextField();
         priceField = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        searchButton = new javax.swing.JButton();
-        removeButton = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        list_1 = new javax.swing.JList<>();
+        yearField = new javax.swing.JTextField();
+        buttonEdit = new javax.swing.JButton();
+        buttonDelete = new javax.swing.JButton();
+        buttonAdd = new javax.swing.JButton();
+        titleField = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        isSelectLYear = new javax.swing.JLabel();
+        isSelectPrice = new javax.swing.JLabel();
+        isSelectLAuthor = new javax.swing.JLabel();
+        isSelectLabel = new javax.swing.JLabel();
+        isSelectId = new javax.swing.JLabel();
+        clearSelections = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        book_list = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -68,137 +111,211 @@ public class LibraryFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(21, 25, 28));
+        jPanel1.setBackground(java.awt.Color.darkGray);
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
-        jPanel2.setBackground(new java.awt.Color(34, 44, 44));
+        jPanel2.setBackground(new java.awt.Color(111, 111, 111));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        titleField.setBackground(new java.awt.Color(153, 153, 153));
-        titleField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        titleField.setBorder(null);
-
-        authorField.setBackground(new java.awt.Color(153, 153, 153));
-        authorField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        authorField.setBorder(null);
-        authorField.addActionListener(new java.awt.event.ActionListener() {
+        buttonEdit.setText("Edit");
+        buttonEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                authorFieldActionPerformed(evt);
+                buttonEditActionPerformed(evt);
             }
         });
 
-        yearField.setBackground(new java.awt.Color(153, 153, 153));
-        yearField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        yearField.setBorder(null);
-        yearField.addActionListener(new java.awt.event.ActionListener() {
+        buttonDelete.setText("Delete");
+        buttonDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                yearFieldActionPerformed(evt);
+                buttonDeleteActionPerformed(evt);
             }
         });
 
-        priceField.setBackground(new java.awt.Color(153, 153, 153));
-        priceField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        priceField.setBorder(null);
-        priceField.addActionListener(new java.awt.event.ActionListener() {
+        buttonAdd.setText("Add");
+        buttonAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                priceFieldActionPerformed(evt);
+                buttonAddActionPerformed(evt);
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(153, 153, 153));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Add");
-        jButton1.setBorder(null);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+
+        jPanel4.setBackground(new java.awt.Color(153, 153, 153));
+
+        isSelectLYear.setBackground(new java.awt.Color(0, 0, 0));
+        isSelectLYear.setFont(new java.awt.Font("Arial Narrow", 1, 12)); // NOI18N
+        isSelectLYear.setForeground(new java.awt.Color(255, 255, 255));
+        isSelectLYear.setText("NENHUM LIVRO SELECIONADO:");
+
+        isSelectPrice.setBackground(new java.awt.Color(0, 0, 0));
+        isSelectPrice.setFont(new java.awt.Font("Arial Narrow", 1, 12)); // NOI18N
+        isSelectPrice.setForeground(new java.awt.Color(255, 255, 255));
+        isSelectPrice.setText("NENHUM LIVRO SELECIONADO:");
+
+        isSelectLAuthor.setBackground(new java.awt.Color(0, 0, 0));
+        isSelectLAuthor.setFont(new java.awt.Font("Arial Narrow", 1, 12)); // NOI18N
+        isSelectLAuthor.setForeground(new java.awt.Color(255, 255, 255));
+        isSelectLAuthor.setText("NENHUM LIVRO SELECIONADO:");
+
+        isSelectLabel.setBackground(new java.awt.Color(0, 0, 0));
+        isSelectLabel.setFont(new java.awt.Font("Arial Narrow", 1, 12)); // NOI18N
+        isSelectLabel.setForeground(new java.awt.Color(255, 255, 255));
+        isSelectLabel.setText("NENHUM LIVRO SELECIONADO:");
+
+        isSelectId.setBackground(new java.awt.Color(0, 0, 0));
+        isSelectId.setFont(new java.awt.Font("Arial Narrow", 1, 12)); // NOI18N
+        isSelectId.setForeground(new java.awt.Color(255, 255, 255));
+        isSelectId.setText("NENHUM ID SELECIONADO:");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(isSelectLabel)
+                    .addComponent(isSelectId)
+                    .addComponent(isSelectLAuthor)
+                    .addComponent(isSelectPrice)
+                    .addComponent(isSelectLYear))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(isSelectId)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(isSelectLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(isSelectLAuthor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(isSelectPrice)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(isSelectLYear)
+                .addGap(15, 15, 15))
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        clearSelections.setText("Clear Fields");
+        clearSelections.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                clearSelectionsActionPerformed(evt);
             }
         });
 
-        searchButton.setBackground(new java.awt.Color(153, 153, 153));
-        searchButton.setForeground(new java.awt.Color(255, 255, 255));
-        searchButton.setText("Search");
-        searchButton.setBorder(null);
-
-        removeButton.setBackground(new java.awt.Color(255, 51, 51));
-        removeButton.setText("X");
-        removeButton.setBorder(null);
-        removeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removeButtonActionPerformed(evt);
-            }
-        });
-
-        list_1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane2.setViewportView(list_1);
+        jButton2.setText("jButton2");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addGap(34, 34, 34)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(priceField, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
-                            .addComponent(yearField)
-                            .addComponent(titleField)
-                            .addComponent(authorField))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clearSelections))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(buttonAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                            .addComponent(buttonEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(buttonDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
+                        .addComponent(yearField)
+                        .addComponent(priceField)
+                        .addComponent(authorField)
+                        .addComponent(titleField)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(authorField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(priceField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(yearField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(64, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(clearSelections)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(authorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(priceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(yearField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonEdit)
+                    .addComponent(buttonDelete))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonAdd)
+                .addGap(33, 33, 33))
         );
+
+        book_list.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        book_list.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        book_list.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                book_listMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(book_list);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
+                .addGap(64, 64, 64)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addGap(77, 77, 77)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(457, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addGap(57, 57, 57)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         jMenuBar1.setBackground(new java.awt.Color(102, 102, 102));
-        jMenuBar1.setBorder(null);
+        jMenuBar1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -212,46 +329,83 @@ public class LibraryFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void buttonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditActionPerformed
+        if (!isSelectId.getText().equals("NENHUM ID SELECIONADO:")) {
+            String title = titleField.getText();
+            String author = authorField.getText();
+            String price = priceField.getText();
+            String year = yearField.getText();
+
+            String id = isSelectId.getText().split(":")[1];
+            System.out.println(id);
+            JOptionPane.showMessageDialog(this, BookController.updateBook(id, title, author, price, year));
+            clearSelecteds();
+            updateList();
+        }
+
+
+    }//GEN-LAST:event_buttonEditActionPerformed
+
+
+    private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
         String title = titleField.getText();
         String author = authorField.getText();
         String price = priceField.getText();
         String year = yearField.getText();
 
-        if(!title.isEmpty() && !author.isEmpty() && !price.isEmpty() && ! year.isEmpty()) {
-            BookController.insertBook(new Book(title, author, Double.parseDouble(price), Integer.parseInt(year)), connection);
+        JOptionPane.showMessageDialog(this, BookController.insertBook(title, author, price, year));
+        clearSelecteds();
+        updateList();
+
+
+    }//GEN-LAST:event_buttonAddActionPerformed
+
+    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
+        if(!isSelectId.getText().equals("NENHUM ID SELECIONADO:")) {
+        String id = isSelectId.getText().split(":")[1];    
+        JOptionPane.showMessageDialog(this, BookController.deleteBook(id));
+        book_list.clearSelection();
+        clearSelecteds();
+        updateList();  
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+        
+        
+        
+    }//GEN-LAST:event_buttonDeleteActionPerformed
 
-    private void priceFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_priceFieldActionPerformed
+    private void book_listMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_book_listMouseClicked
+        int index = book_list.getSelectedRow();
+        if (index != index - 1) {
+            String IdbookSelected = "" + model.getValueAt(index, 0);
+            String nameBookSelected = "" + model.getValueAt(index, 1);
+            String authorBookSelected = "" + model.getValueAt(index, 2);
+            String priceBookSelected = "" + model.getValueAt(index, 3);
+            String yearBookSelected = "" + model.getValueAt(index, 4);
 
-    private void authorFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_authorFieldActionPerformed
+            isSelectId.setText("ID: " + IdbookSelected);
+            isSelectLabel.setText("LIVRO SELECIONADO: " + nameBookSelected.toUpperCase());
+            isSelectLAuthor.setText("AUTHOR: " + authorBookSelected.toUpperCase());
+            isSelectPrice.setText("PREÇO: " + priceBookSelected.toLowerCase().toUpperCase());
+            isSelectLYear.setText("YEAR: " + yearBookSelected.toUpperCase());
+            book_list.clearSelection();
+        }
 
-    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_removeButtonActionPerformed
 
-    private void yearFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_yearFieldActionPerformed
+    }//GEN-LAST:event_book_listMouseClicked
+
+    private void clearSelectionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearSelectionsActionPerformed
+        clearSelecteds();
+    }//GEN-LAST:event_clearSelectionsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -291,19 +445,28 @@ public class LibraryFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField authorField;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTable book_list;
+    private javax.swing.JButton buttonAdd;
+    private javax.swing.JButton buttonDelete;
+    private javax.swing.JButton buttonEdit;
+    private javax.swing.JButton clearSelections;
+    private javax.swing.JLabel isSelectId;
+    private javax.swing.JLabel isSelectLAuthor;
+    private javax.swing.JLabel isSelectLYear;
+    private javax.swing.JLabel isSelectLabel;
+    private javax.swing.JLabel isSelectPrice;
+    private javax.swing.JButton jButton2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JList<String> list_1;
     private javax.swing.JTextField priceField;
-    private javax.swing.JButton removeButton;
-    private javax.swing.JButton searchButton;
     private javax.swing.JTextField titleField;
     private javax.swing.JTextField yearField;
     // End of variables declaration//GEN-END:variables

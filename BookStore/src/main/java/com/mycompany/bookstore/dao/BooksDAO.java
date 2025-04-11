@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.bookstore.dao;
+import com.mycompany.bookstore.dataBase.ConnectionSQL;
 import java.sql.Connection;
 import  java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -24,7 +25,9 @@ public class BooksDAO {
     
     
     
-    public static int insertBook(Book book, Connection connection) {
+    public static int insertBook(Book book) {
+        ConnectionSQL connect = new ConnectionSQL();
+        Connection  connection = connect.connect();
         
         String sql = "insert into books (title, author, price, year) values (?, ?, ?, ?)";
         
@@ -33,6 +36,8 @@ public class BooksDAO {
             psmt.setString(2, book.getAuthor());
             psmt.setDouble(3, book.getPrice());
             psmt.setInt(4, book.getYear());
+            
+            psmt.executeUpdate();
             
             
             System.out.println("User created successfully");
@@ -49,15 +54,17 @@ public class BooksDAO {
     }
     
     
-    public static int updateBook(Connection connection, int id, String title, String author, double price, int year) {
+    public static int updateBook( Book book) {
+        ConnectionSQL connect = new ConnectionSQL();
+        Connection  connection = connect.connect();
         String sql = "UPDATE books SET title = ?, author = ?, price = ?, year = ? where id = ?";
         
         try(PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, title);
-            stmt.setString(2, author);
-            stmt.setDouble(3, price );
-            stmt.setInt(4, year);
-            stmt.setInt(5, id);
+            stmt.setString(1, book.getTitle());
+            stmt.setString(2, book.getAuthor());
+            stmt.setDouble(3, book.getPrice() );
+            stmt.setInt(4, book.getYear());
+            stmt.setInt(5, book.getId());
             
             int rowsUpdated = stmt.executeUpdate();
             
@@ -80,7 +87,9 @@ public class BooksDAO {
     }   
     
     
-    public static int deleteBook(Connection connection, int id) {
+    public static int deleteBook(int id) {
+        ConnectionSQL connect = new ConnectionSQL();
+        Connection  connection = connect.connect();
         String sql = "DELETE FROM books WHERE id = ?";
         
         try(PreparedStatement psmtm = connection.prepareStatement(sql)) {
@@ -101,7 +110,9 @@ public class BooksDAO {
         }
     }
     
-    public static String[] findBook(Connection connection, int id) {
+    public static String[] findBook( int id) {
+        ConnectionSQL connect = new ConnectionSQL();
+        Connection  connection = connect.connect();
         String sql = "SELECT * FROM books WHERE id = ?";
         String[] info = new String[4];
         
@@ -118,7 +129,7 @@ public class BooksDAO {
             }
             
             System.out.println(info[0] + " " + info[1]+ " " + info[2]+ " " + info[3]);
-            
+           
             
         }
         catch(SQLException e) {
@@ -128,7 +139,9 @@ public class BooksDAO {
         return info;
     }
     
-     public static ArrayList<Book> findBooks(Connection connection, int id) {
+     public static ArrayList<Book> findBooks() {
+         ConnectionSQL connect = new ConnectionSQL();
+        Connection  connection = connect.connect();
           String sql = "SELECT * FROM books";
           ArrayList<Book> books = new ArrayList<>();
           
@@ -137,13 +150,17 @@ public class BooksDAO {
               
               while(rs.next()) {
                   Book myBook =  new Book(rs.getString("title"), rs.getString("author"), rs.getDouble("price"), rs.getInt("year"));
+                  books.add(myBook);
+                  
+                  myBook.setId(rs.getInt("id"));
               }
+              
+              return  books;
           }
           catch(SQLException e) {
-              
+              System.out.println(e.getMessage());
+              return  null;
           }
-          
-          
      }
 
 }

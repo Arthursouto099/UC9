@@ -14,12 +14,14 @@ public class Book {
     private  String author;
     private double price;
     private int  year;
+    private boolean isRetend;
 
     public Book(String title, String author, double price, int year) {
         this.title = title;
         this.author = author;
         this.price = price;
         this.year = year;
+        this.isRetend = false;
     }
 
     public int getId() {
@@ -28,6 +30,14 @@ public class Book {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isIsRetend() {
+        return isRetend;
+    }
+
+    public void setIsRetend(boolean isRetend) {
+        this.isRetend = isRetend;
     }
     
     
@@ -65,6 +75,10 @@ public class Book {
         this.year = year;
     }
     
+    
+    public String getInfo() {
+        return  "ID: "+this.id + " TITLE: " + this.title + " AUTHOR: " + this.author + " PRICE: " + this.price + " YEAR: " + this.year + " ISRETEND: " + this.isRetend;
+    }
     
     
 }

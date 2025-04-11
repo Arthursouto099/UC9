@@ -14,17 +14,27 @@ import javax.swing.JOptionPane;
  */
 public class CreateTable {
     
-    public static void createTables(Connection connection) {
+    public static void createTables() {
+        ConnectionSQL connect = new ConnectionSQL();
+        Connection  connection = connect.connect();
         
-        String sql = "CREATE TABLE IF NOT EXISTS books( "
+//        String sql = "CREATE TABLE IF NOT EXISTS books( "
+//                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+//                + "title VARCHAR(100) NOT NULL, "
+//                + "author VARCHAR(255) NOT NULL, "
+//                + "price REAL NOT NULL, "
+//                + "year INTEGER NOT NULL)"
+                
+            String sql = "CREATE TABLE IF NOT EXISTS users("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "title VARCHAR(100) NOT NULL, "
-                + "author VARCHAR(255) NOT NULL, "
-                + "price REAL NOT NULL, "
-                + "year INTEGER NOT NULL)";
+                + "name VARCHAR(100) NOT NULL,"
+                + "id_book INTEGER,"
+                + "FOREIGN KEY (id_book) REFERENCES books(id) ON DELETE SET NULL)";
+            
+            String alterTable = "ALTER TABLE books ADD COLUMN isRented INTEGER DEFAULT 0";
         
         try(Statement pstmt = connection.createStatement() ) {
-            pstmt.execute(sql);
+            pstmt.execute(alterTable);
             System.out.println("Table created");
             
         }catch(SQLException e) {

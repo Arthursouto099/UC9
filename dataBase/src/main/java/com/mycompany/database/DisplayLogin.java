@@ -182,34 +182,14 @@ public class DisplayLogin extends javax.swing.JFrame {
         String emailInput = inputEmail.getText();
         char[] passwordArray = inputPassword.getPassword();
         String password = new String(passwordArray);
+       
         
-//            ArrayList<String> emailsAsString = ListUsers.getEmailsAndPasswords(this.connection);
-//
-//            boolean verify = false;
-//
-//            for (String emailAndPassword : emailsAsString) {
-//                String[] splited = emailAndPassword.split(":");
-//                String email = splited[0];
-//                String password = splited[1];
-//
-//                if (email.equals(emailInput)) {
-//                    if (password.equals(password)) {
-//                        verify = true;
-//                    }
-//                }
-//            }
-//
-//            if (verify) {
-//                JOptionPane.showMessageDialog(this, "Usuario logado com sucesso");
-//            } else if (emailInput.isEmpty() || passwordInput.isEmpty()) {
-//
-//            } else {
-//
-//                JOptionPane.showMessageDialog(this, "Campos vazios");
-//            }
         String[] user = ListUsers.getUSer(this.connection, emailInput, password);
+        for(String user_by : user) {
+            System.out.println(user_by);
+        }
 
-        if (user.length < 1) {
+        if (user[0] == null) {
             JOptionPane.showMessageDialog(this, "Usuario ou senha incorretas");
         } else {
             TestFrame frame = new TestFrame(user[0], user[2], user[1]);
