@@ -11,6 +11,7 @@ import com.mycompany.bookstore.dataBase.CreateTable;
 import com.mycompany.bookstore.dao.UsersDAO;
 import com.mycompany.bookstore.model.User;
 import java.util.ArrayList;
+import com.mycompany.bookstore.views.LibraryFrame;
  
 /**
  *
@@ -21,14 +22,8 @@ public class BookStore {
     public static void main(String[] args) {
        
 
-//      
-//       
-       ArrayList<Book> list  = BooksDAO.findBooks();
-       
-        for (Book book : list) {
-            System.out.println(book.getInfo());
-        }
-   
+      
+      new LibraryFrame(null, null, null, null, null).setVisible(true);
         
         
         

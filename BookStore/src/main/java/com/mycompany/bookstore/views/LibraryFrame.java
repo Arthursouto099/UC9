@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.sql.Connection;
 import java.util.Locale;
 import javax.swing.table.DefaultTableModel;
+import  com.mycompany.bookstore.views.Utils.QueryTool;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -19,15 +20,20 @@ import javax.swing.table.DefaultTableModel;
  */
 public class LibraryFrame extends javax.swing.JFrame {
 
-    ConnectionSQL connect = new ConnectionSQL();
-    Connection connection = connect.connect();
+    String IdbookSelectedCST;
+    String nameBookSelectedCST;
+    String authorBookSelectedCST;
+    String priceBookSelectedCST;
+    String yearBookSelectedCST;
 
     DefaultTableModel model = new DefaultTableModel();
 
     /**
      * Creates new form LibaryFrame
+     *
+     * @param IdbookSelectedCST
      */
-    public LibraryFrame() {
+    public LibraryFrame(String IdbookSelectedCST, String nameBookSelectedCST, String authorBookSelectedCST, String priceBookSelectedCST, String yearBookSelectedCST) {
         initComponents();
         model.addColumn("ID");
         model.addColumn("TITLE");
@@ -35,11 +41,25 @@ public class LibraryFrame extends javax.swing.JFrame {
         model.addColumn("PRICE");
         model.addColumn("YEAR");
         model.addColumn("RENTEND");
-
         updateList();
 
         book_list.setModel(model);
+
+        System.out.println(IdbookSelectedCST + nameBookSelectedCST);
+        
+        if(IdbookSelectedCST != null) {
+        isSelectId.setText("ID: " + IdbookSelectedCST);
+        isSelectLabel.setText("LIVRO SELECIONADO: " + nameBookSelectedCST.toUpperCase());
+        isSelectLAuthor.setText("AUTHOR: " + authorBookSelectedCST.toUpperCase());
+        isSelectPrice.setText("PREÇO: " + priceBookSelectedCST.toLowerCase().toUpperCase());
+        isSelectLYear.setText("YEAR: " + yearBookSelectedCST.toUpperCase());
+        }
+   
+
+        System.out.println(IdbookSelectedCST);
+
     }
+
 
     public void updateList() {
         model.setRowCount(0);
@@ -89,7 +109,7 @@ public class LibraryFrame extends javax.swing.JFrame {
         isSelectLabel = new javax.swing.JLabel();
         isSelectId = new javax.swing.JLabel();
         clearSelections = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        byReferenceButton = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         book_list = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -222,7 +242,12 @@ public class LibraryFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("jButton2");
+        byReferenceButton.setText("Find by reference");
+        byReferenceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                byReferenceButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -232,7 +257,7 @@ public class LibraryFrame extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(byReferenceButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clearSelections))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -254,7 +279,7 @@ public class LibraryFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(clearSelections)
-                    .addComponent(jButton2))
+                    .addComponent(byReferenceButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -301,8 +326,8 @@ public class LibraryFrame extends javax.swing.JFrame {
                 .addGap(64, 64, 64)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(77, 77, 77)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(457, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 712, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(223, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -329,7 +354,9 @@ public class LibraryFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -371,16 +398,15 @@ public class LibraryFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAddActionPerformed
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
-        if(!isSelectId.getText().equals("NENHUM ID SELECIONADO:")) {
-        String id = isSelectId.getText().split(":")[1];    
-        JOptionPane.showMessageDialog(this, BookController.deleteBook(id));
-        book_list.clearSelection();
-        clearSelecteds();
-        updateList();  
+        if (!isSelectId.getText().equals("NENHUM ID SELECIONADO:")) {
+            String id = isSelectId.getText().split(":")[1];
+            JOptionPane.showMessageDialog(this, BookController.deleteBook(id));
+            book_list.clearSelection();
+            clearSelecteds();
+            updateList();
         }
-        
-        
-        
+
+
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
     private void book_listMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_book_listMouseClicked
@@ -406,6 +432,10 @@ public class LibraryFrame extends javax.swing.JFrame {
     private void clearSelectionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearSelectionsActionPerformed
         clearSelecteds();
     }//GEN-LAST:event_clearSelectionsActionPerformed
+
+    private void byReferenceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byReferenceButtonActionPerformed
+        new QueryTool().setVisible(rootPaneCheckingEnabled);
+    }//GEN-LAST:event_byReferenceButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -438,7 +468,7 @@ public class LibraryFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LibraryFrame().setVisible(true);
+
             }
         });
     }
@@ -449,13 +479,13 @@ public class LibraryFrame extends javax.swing.JFrame {
     private javax.swing.JButton buttonAdd;
     private javax.swing.JButton buttonDelete;
     private javax.swing.JButton buttonEdit;
+    private javax.swing.JButton byReferenceButton;
     private javax.swing.JButton clearSelections;
     private javax.swing.JLabel isSelectId;
     private javax.swing.JLabel isSelectLAuthor;
     private javax.swing.JLabel isSelectLYear;
     private javax.swing.JLabel isSelectLabel;
     private javax.swing.JLabel isSelectPrice;
-    private javax.swing.JButton jButton2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

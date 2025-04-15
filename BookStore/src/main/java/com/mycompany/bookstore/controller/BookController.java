@@ -94,4 +94,27 @@ public class BookController {
     }
     
     
+    public static ArrayList<Book> getByReference(String reference) {
+        
+ 
+        
+   
+        ArrayList<Book> book_list =  BooksDAO.findBooks();
+        ArrayList<Book> newBookList = new ArrayList<>();
+        
+        
+        
+        for(Book b : book_list) {
+            if(b.getTitle().contains(reference)) {
+                newBookList.add(b);
+            }
+        }
+        
+     
+   
+        
+        return newBookList;
+    }
+    
+    
 }
