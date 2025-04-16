@@ -8,9 +8,12 @@ import com.mycompany.mysqlconnect.dataBase.ConnectionSQL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import com.mycompany.mysqlconnect.model.User;
+import java.sql.Array;
 import java.sql.SQLException;
 import org.mindrot.jbcrypt.BCrypt;
 import java.sql.ResultSet;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -49,7 +52,7 @@ public class UserDAO {
                     throw new SQLException("Senha incorreta");
                 }
             } else {
-                throw new  SQLException("Usuario não encontrado");
+                throw new SQLException("Usuario não encontrado");
             }
 
         } catch (SQLException e) {
@@ -60,56 +63,87 @@ public class UserDAO {
         return false;
 
     }
-    
-    
-    
-    
-    
-    
- public static User findUserByEmail(String email) {
-     String sql = "SELECT * FROM users WHERE email = ?";
-     
-     try(PreparedStatement pstmt = ConnectionSQL.connect().prepareStatement(sql)) {
-         pstmt.setString(1, email);
-         ResultSet result = pstmt.executeQuery();
-         
-         if(result.next()) {
-             User  u = new User(result.getString("email"), result.getString("password"));
-             u.setId(result.getInt("id"));
-             return  u;
-         }
-         
-         else {
-             throw new SQLException("Usuario não eonctrado");
-         }
-         
-         
-     } catch (SQLException e) {
-         System.out.println(e.getMessage());
-         return  null;
-     }
-     
-     
- }
- 
- 
- public static  boolean updatePassword(String email, String password) {
-     String sql = "UPDATE users SET password = ? WHERE email = ?";
-     String hashPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-     
-     
-            try(PreparedStatement p = ConnectionSQL.connect().prepareStatement(sql)) {
-                p.setString(1, hashPassword);
-                p.setString(2, email);
-                return  p.executeUpdate() > 0;
-                    
-                
-                
-                
-            } catch (Exception e) {
-                e.printStackTrace();
-                return  false;
+
+    public static User findUserByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        try (PreparedStatement pstmt = ConnectionSQL.connect().prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet result = pstmt.executeQuery();
+
+            if (result.next()) {
+                User u = new User(result.getString("email"), result.getString("password"));
+                u.setId(result.getInt("id"));
+                return u;
+            } else {
+                throw new SQLException("Usuario não eonctrado");
             }
- }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+
+    }
+
+    public static boolean updatePassword(String email, String password) {
+        String sql = "UPDATE users SET password = ? WHERE email = ?";
+        String hashPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
+        try (PreparedStatement p = ConnectionSQL.connect().prepareStatement(sql)) {
+            p.setString(1, hashPassword);
+            p.setString(2, email);
+            return p.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static ArrayList<User> getAllUsers(String isADMPassword) {
+        String sql = "SELECT * FROM users";
+        ArrayList<User> users = new ArrayList<>();
+
+        try(PreparedStatement pstmt = ConnectionSQL.connect().prepareStatement(sql)) {
+            ResultSet rows = pstmt.executeQuery();
+            
+            while(rows.next()) {
+                User u = new User(rows.getString("email"), rows.getString("password"));
+                u.setId(rows.getInt("id"));
+                users.add(u);
+            }
+            
+            return  users;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+
+    }
+    
+    
+    
+    public static ArrayList<User> getAllUsers() {
+        String sql = "SELECT id, email FROM users ORDER BY id DESC";
+        ArrayList<User> users = new ArrayList<>();
+
+        try(PreparedStatement p = ConnectionSQL.connect().prepareStatement(sql)) {
+            ResultSet rows = p.executeQuery();
+            
+            while (rows.next()) {                
+                User u = new User(rows.getInt("id"),rows.getString("email"));
+                users.add(u);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return users;
+        
+    }
 
 }
