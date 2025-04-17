@@ -15,8 +15,8 @@ import com.mycompany.mysqlconnect.model.User;
 public class MysqlConnect {
 
     public static void main(String[] args) {
-       User user = new User("arthurtavares@gmail.com", "3");    
-       UserDAO.login(user);
+        ConnectionSQL.connect();
+       ConnectionSQL.createTable();
        
         
     }
